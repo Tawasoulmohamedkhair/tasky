@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tasky/core/services/preferences_manager.dart';
@@ -104,9 +105,11 @@ class _AddTaskState extends State<AddTaskScreen> {
                       //converted to list
                       listtasks = jsonDecode(taskjson);
                     }
+                    final random = Random();
+
                     //listtasks.length =1=>1+1
                     TaskModel model = TaskModel(
-                      id: listtasks.length + 1,
+                      id: random.nextInt(1000), // Generate a random ID
                       taskname: taskNameController.text,
                       taskdescription: taskDescriptionController.text,
                       isHighPriority: isHighPriority,

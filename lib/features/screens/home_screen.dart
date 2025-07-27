@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -76,9 +77,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _deleteTask(int? id) async {
+    log('delete task id: $id');
     List<TaskModel> tasks = [];
     if (id == null) return;
     final finalTasks = PreferencesManager().getString('tasks');
+
+    log("finalTasks: $finalTasks");
     if (finalTasks != null) {
       final taskaftedecode = jsonDecode(finalTasks) as List<dynamic>;
       tasks = taskaftedecode.map((e) => TaskModel.fromJson(e)).toList();
