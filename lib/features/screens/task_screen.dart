@@ -71,7 +71,7 @@ class _TasksScreenState extends State<TasksScreen> {
   //     });
   //   }
 
-  _deleteTask(int? id) async {
+  _deleteTask(String? id) async {
     if (id == null) return;
     final finalTasks = PreferencesManager().getString('tasks');
     if (finalTasks != null) {
@@ -88,23 +88,6 @@ class _TasksScreenState extends State<TasksScreen> {
       todoTasks.removeWhere((element) => element.id == id);
     });
   }
-
-  // _deleteTask(int? id) async {
-  //   List<TaskModel> tasks = [];
-  //   if (id == null) return;
-  //   final finalTasks = PreferencesManager().getString('tasks');
-  //   if (finalTasks != null) {
-  //     final taskaftedecode = jsonDecode(finalTasks) as List<dynamic>;
-  //     tasks = taskaftedecode.map((e) => TaskModel.fromJson(e)).toList();
-  //     tasks.removeWhere((element) => element.id == id);
-  //   }
-
-  //   setState(() {
-  //     todoTasks.removeWhere((element) => element.id == id);
-  //   });
-  //   final updateTasks = todoTasks.map((e) => e.toJson()).toList();
-  //   await PreferencesManager().setString('tasks', jsonEncode(updateTasks));
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +134,7 @@ class _TasksScreenState extends State<TasksScreen> {
                           _loadtask();
                         }
                       },
-                      onDelete: (int? id) {
+                      onDelete: (String? id) {
                         _deleteTask(id);
                       },
                     ),

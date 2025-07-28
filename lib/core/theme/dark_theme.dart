@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 ThemeData darkTheme = ThemeData(
   useMaterial3: true,
 
-  // brightness: Brightness.dark,
   scaffoldBackgroundColor: Color(0xff181818),
   appBarTheme: AppBarTheme(
     backgroundColor: Color(0xff181818),
@@ -48,10 +47,8 @@ ThemeData darkTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      // backgroundColor: WidgetStatePropertyAll(Color(0xff15B86C)),
       foregroundColor: WidgetStatePropertyAll(Color(0xffFFFCFC)),
 
-      // elevation: WidgetStatePropertyAll(12),
       shape: WidgetStatePropertyAll(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
@@ -139,7 +136,6 @@ ThemeData darkTheme = ThemeData(
     selectionHandleColor: Colors.white,
   ),
   splashFactory: NoSplash.splashFactory,
-  // popupMenuTheme: PopupMenuThemeData(color: Color(0xff181818)),
   popupMenuTheme: PopupMenuThemeData(
     color: Color(0xff181818),
     shape: RoundedRectangleBorder(

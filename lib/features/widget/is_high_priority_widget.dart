@@ -91,7 +91,6 @@ class IsHighPriorityWidget extends StatelessWidget {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
-                  //  color: Color(0xff282828),
                   border: Border.all(
                     color:
                         ThemeController.isDark()

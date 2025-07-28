@@ -1,13 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/core/widgets/custom_elevated_button.dart';
 import 'package:tasky/core/widgets/custom_text_form_field.dart';
 import 'package:tasky/data/models/task_model.dart';
+import 'package:uuid/uuid.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -31,13 +31,9 @@ class _AddTaskState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final uuid = Uuid();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'New Task',
-          // style: Theme.of(context).textTheme.titleMedium
-        ),
-      ),
+      appBar: AppBar(title: Text('New Task')),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
         child: Form(
@@ -80,7 +76,6 @@ class _AddTaskState extends State<AddTaskScreen> {
                     ),
                   ),
                   Switch(
-                    //activeTrackColor: Color(0xff15B86C),
                     value: isHighPriority,
                     onChanged: (value) {
                       setState(() {
@@ -91,6 +86,7 @@ class _AddTaskState extends State<AddTaskScreen> {
                 ],
               ),
               Spacer(),
+
               CustomElevatedButton(
                 onPressed: () async {
                   //validate field
@@ -105,11 +101,11 @@ class _AddTaskState extends State<AddTaskScreen> {
                       //converted to list
                       listtasks = jsonDecode(taskjson);
                     }
-                    final random = Random();
-
                     //listtasks.length =1=>1+1
                     TaskModel model = TaskModel(
-                      id: random.nextInt(1000), // Generate a random ID
+                      // id: listtasks.length + 1,
+                      id: uuid.v4(),
+                     
                       taskname: taskNameController.text,
                       taskdescription: taskDescriptionController.text,
                       isHighPriority: isHighPriority,
@@ -123,7 +119,7 @@ class _AddTaskState extends State<AddTaskScreen> {
 
                     Navigator.of(context).pop(true);
                   }
-                  _formKeytask.currentState!.validate();
+                  // _formKeytask.currentState!.validate();
                 },
                 icon: Icon(Icons.add),
                 label: Text(

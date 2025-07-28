@@ -30,7 +30,6 @@ ThemeData lightTheme = ThemeData(
     style: ButtonStyle(
       foregroundColor: WidgetStatePropertyAll(Color(0xff161F1B)),
 
-      // elevation: WidgetStatePropertyAll(12),
       shape: WidgetStatePropertyAll(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),

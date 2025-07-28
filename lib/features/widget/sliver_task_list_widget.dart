@@ -14,7 +14,7 @@ class SliverTaskListWidget extends StatelessWidget {
   });
   final List<TaskModel> tasks;
   final Function(bool?, int?) onTap;
-  final Function(int?) onDelete;
+  final Function(String? ) onDelete;
 
   final String emptyMessage;
   final String svgPath;
@@ -42,7 +42,7 @@ class SliverTaskListWidget extends StatelessWidget {
             itemCount: tasks.length,
             itemBuilder: (context, index) {
               return TaskItemWidget(
-                onDelete: (int? id) {
+                onDelete: (String? id) {
                   onDelete(id);
                 },
                 model: tasks[index],

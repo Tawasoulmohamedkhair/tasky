@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class TaskModel extends Equatable {
-  final int id;
+  final String id;
   final String taskname;
   final String taskdescription;
   final bool isHighPriority;
@@ -19,7 +19,7 @@ class TaskModel extends Equatable {
   List<Object?> get props => [taskname, taskdescription, isHighPriority];
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(
-      id: json['id'] ?? 0,
+      id: json['id'].toString(),
       taskname: json['taskname'] ?? '',
       taskdescription: json['taskdescription'] ?? '',
       isHighPriority: json['isHighPriority'] ?? false,

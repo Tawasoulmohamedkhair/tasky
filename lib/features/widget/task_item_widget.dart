@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/enums/task_action_items_enums.dart';
 import 'package:tasky/core/theme/theme_controller.dart';
 import 'package:tasky/core/widgets/custom_checkbox.dart';
+import 'package:tasky/core/widgets/custom_text_form_field.dart';
 import 'package:tasky/data/models/task_model.dart';
 
 class TaskItemWidget extends StatelessWidget {
@@ -14,7 +15,7 @@ class TaskItemWidget extends StatelessWidget {
   final TaskModel model;
 
   final Function(bool?) onChanged;
-  final Function(int? id) onDelete;
+  final Function(String ? id) onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -101,16 +102,23 @@ class TaskItemWidget extends StatelessWidget {
                         )
                         .toList(),
           ),
-          
         ],
       ),
     );
   }
 
   _showDialog(context) {
+    final controller = TextEditingController(text: model.taskname);
     return AlertDialog(
       title: Text('Delete Task'),
-      content: Text('Are you sure you want to delete this task?'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+
+        children: [
+          Text('Are you sure you want to delete this task?'),
+          CustomTextFormFields(title: '', hintText: '', controller: controller),
+        ],
+      ),
       actions: [
         TextButton(
           child: Text('Cancel'),
@@ -119,12 +127,12 @@ class TaskItemWidget extends StatelessWidget {
           },
         ),
         TextButton(
-          child: Text('Delete'),
           style: TextButton.styleFrom(foregroundColor: Colors.red),
           onPressed: () {
             onDelete(model.id);
             Navigator.of(context).pop();
           },
+          child: Text('Delete'),
         ),
       ],
     );

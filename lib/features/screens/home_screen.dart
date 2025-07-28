@@ -41,10 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _loadtask() async {
-    await Future.delayed(Duration(seconds: 3));
     setState(() {
       isloading = true;
     });
+    await Future.delayed(Duration(seconds: 3));
+
     final finalTasks = PreferencesManager().getString('tasks');
     if (finalTasks != null) {
       final taskaftedecode = jsonDecode(finalTasks) as List<dynamic>;
@@ -59,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isloading = false;
     });
+    print('Loaded tasks count: ${task.length}');
   }
 
   calculatepercentage() {
@@ -76,13 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
     await PreferencesManager().setString('tasks', jsonEncode(updateTasks));
   }
 
-  _deleteTask(int? id) async {
-    log('delete task id: $id');
+  _deleteTask(String? id) async {
+    // log('delete task id: $id');
     List<TaskModel> tasks = [];
     if (id == null) return;
     final finalTasks = PreferencesManager().getString('tasks');
 
-    log("finalTasks: $finalTasks");
+    //log("finalTasks: $finalTasks");
     if (finalTasks != null) {
       final taskaftedecode = jsonDecode(finalTasks) as List<dynamic>;
       tasks = taskaftedecode.map((e) => TaskModel.fromJson(e)).toList();
@@ -201,7 +203,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               isloading
-                  ? Center(child: CustomLoadingIndicator())
+                  ? SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(child: CustomLoadingIndicator()),
+                  )
                   : SliverTaskListWidget(
                     svgPath: 'assets/svg/file.svg',
 
@@ -210,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: (value, index) {
                       _doneTask(value, index);
                     },
-                    onDelete: (int? id) {
+                    onDelete: (String? id) {
                       _deleteTask(id);
                     },
                   ),

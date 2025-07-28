@@ -47,32 +47,7 @@ class _CompleteScreenState extends State<CompleteScreen> {
     });
   }
 
-  // _deleteTask(int? id) async {
-  //   if (id == null) return;
-
-  //   final finalTasks = PreferencesManager().getString('tasks');
-  //   if (finalTasks == null) return;
-  //   List<TaskModel> tasks = [];
-
-  //   final taskaftedecode = jsonDecode(finalTasks) as List<dynamic>;
-  //   tasks = taskaftedecode.map((e) => TaskModel.fromJson(e)).toList();
-
-  //   // Remove the task with the given id from the full list
-  //   tasks.removeWhere((element) => element.id == id);
-
-  //   // Save updated full task list
-  //   await PreferencesManager().setString(
-  //     'tasks',
-  //     jsonEncode(tasks.map((e) => e.toJson()).toList()),
-  //   );
-
-  //   // Update the visible completeTasks list
-  //   setState(() {
-  //     completeTasks.removeWhere((element) => element.id == id);
-  //   });
-  // }
-
-  _deleteTask(int? id) async {
+  _deleteTask(String? id) async {
     if (id == null) return;
     final finalTasks = PreferencesManager().getString('tasks');
     if (finalTasks != null) {
@@ -126,21 +101,9 @@ class _CompleteScreenState extends State<CompleteScreen> {
                         );
                         _loadtask();
                       },
-                      onDelete: (int? id) {
+                      onDelete: (String? id) {
                         _deleteTask(id);
                       },
-                      // onDelete: (index) async {
-                      //   setState(() {
-                      //     completeTasks.removeAt(index!);
-                      //   });
-                      //   final updateTasks =
-                      //       completeTasks.map((e) => e.toJson()).toList();
-                      //   await PreferencesManager().setString(
-                      //     'tasks',
-                      //     jsonEncode(updateTasks),
-                      //   );
-                      //   _loadtask();
-                      // },
                     ),
           ),
         ),

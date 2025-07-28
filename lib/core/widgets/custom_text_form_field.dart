@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:tasky/core/theme/dark_theme.dart';
 
 class CustomTextFormFields extends StatelessWidget {
   const CustomTextFormFields({
@@ -29,10 +28,7 @@ class CustomTextFormFields extends StatelessWidget {
           validator: validator,
           style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
 
-          decoration: InputDecoration(
-            hintText: hintText,
-            //  hintStyle: Theme.of(context).textTheme.titleMedium,
-          ),
+          decoration: InputDecoration(hintText: hintText),
 
           maxLines: maxLines,
         ),

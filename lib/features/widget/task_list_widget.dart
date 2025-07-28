@@ -1,8 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:tasky/core/services/preferences_manager.dart';
-import 'package:tasky/core/widgets/custom_checkbox.dart';
 import 'package:tasky/core/widgets/custom_svg_picture.dart';
 import 'package:tasky/data/models/task_model.dart';
 import 'package:tasky/features/widget/task_item_widget.dart';
@@ -18,7 +14,7 @@ class TaskListWidget extends StatelessWidget {
   });
   final List<TaskModel> tasks;
   final Function(bool?, int?) onTap;
-  final Function(int?) onDelete;
+  final Function(String ? ) onDelete;
 
   final String emptyMessage;
   final String svgPath;
@@ -45,7 +41,7 @@ class TaskListWidget extends StatelessWidget {
               onChanged: (bool? value) {
                 onTap(value, index);
               },
-              onDelete: (int? id) {
+              onDelete: (String? id) {
                 onDelete(id);
               },
             );

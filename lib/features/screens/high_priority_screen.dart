@@ -46,7 +46,7 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
     });
   }
 
-  _deleteTask(int? id) async {
+  _deleteTask(String? id) async {
     List<TaskModel> tasks = [];
     if (id == null) return;
     final finalTasks = PreferencesManager().getString('tasks');
@@ -76,7 +76,7 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
                   svgPath: 'assets/svg/file.svg',
 
                   tasks: highPriorityTasks,
-                  onDelete: (int? id) {
+                  onDelete: (String? id) {
                     _deleteTask(id);
                   },
 
