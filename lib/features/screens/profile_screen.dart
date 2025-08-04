@@ -1,4 +1,10 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/core/theme/theme_controller.dart';
 import 'package:tasky/features/screens/user_details.dart';
@@ -17,6 +23,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String motivationQuote;
   bool isloading = true;
   bool isDarkMode = false;
+  File? _selectedImage;
+  String? userImagePath;
   @override
   void initState() {
     super.initState();
@@ -30,6 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           PreferencesManager().getString('motivationQuote') ??
           'One task at a time. One step closer.';
       isDarkMode = PreferencesManager().getBool('theme') ?? false;
+      userImagePath = PreferencesManager().getString('user_image');
       isloading = false;
     });
   }
@@ -63,12 +72,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       CircleAvatar(
                         radius: 100.0,
                         backgroundColor: Colors.transparent,
-                        backgroundImage: AssetImage(
-                          'assets/images/Thumbnail.png',
-                        ),
+                        backgroundImage:
+                            userImagePath == null
+                                ? AssetImage('assets/images/Thumbnail.png')
+                                : FileImage(File(userImagePath!)),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async {
+                          _showImageSourceDilog(context, (XFile file) {
+                            _saveImage(file);
+                            log(file.path);
+                            setState(() {
+                              userImagePath = file.path;
+                              log(userImagePath!);
+                            });
+                          });
+                        },
                         child: Container(
                           width: 45,
                           height: 45,
@@ -163,5 +182,97 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  void _showButtonSheet(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+
+      context: context,
+      builder: (context) {
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.9,
+          ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  color: Colors.red,
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  void _showImageSourceDilog(
+    BuildContext context,
+    Function(XFile) selectedFile,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text('Choose Image Source'),
+          children: [
+            SimpleDialogOption(
+              padding: EdgeInsets.all(16),
+
+              onPressed: () async {
+                Navigator.pop(context);
+                XFile? image = await ImagePicker().pickImage(
+                  source: ImageSource.camera,
+                );
+                if (image != null && image.path.isNotEmpty) {
+                  selectedFile(image);
+                  log(image.path);
+                }
+              },
+              child: Row(
+                children: [
+                  Icon(Icons.camera_alt_outlined),
+                  SizedBox(width: 8),
+                  Text('Camera'),
+                ],
+              ),
+            ),
+            SimpleDialogOption(
+              padding: EdgeInsets.all(16),
+              onPressed: () async {
+                Navigator.pop(context);
+                XFile? image = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                );
+                if (image != null && image.path.isNotEmpty) {
+                  selectedFile(image);
+                }
+              },
+              child: Row(
+                children: [
+                  Icon(Icons.photo_library_outlined),
+                  SizedBox(width: 8),
+                  Text('Gallery'),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _saveImage(XFile file) async {
+    final appDir = await getApplicationDocumentsDirectory();
+    final newfile = await File(file.path).copy('${appDir.path}/${file.name}');
+    PreferencesManager().setString('user_image', newfile.path);
+    log(newfile.path);
   }
 }

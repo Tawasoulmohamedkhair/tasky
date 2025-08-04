@@ -46,31 +46,6 @@ class _TasksScreenState extends State<TasksScreen> {
     });
   }
 
-  // _deleteTask(int? id) async {
-  //     if (id == null) return;
-
-  //     final finalTasks = PreferencesManager().getString('tasks');
-  //     if (finalTasks == null) return;
-
-  //     final taskaftedecode = jsonDecode(finalTasks) as List<dynamic>;
-  //     List<TaskModel> allTasks =
-  //         taskaftedecode.map((e) => TaskModel.fromJson(e)).toList();
-
-  //     // Remove the task with the given id from the full list
-  //     allTasks.removeWhere((element) => element.id == id);
-
-  //     // Save updated full task list
-  //     await PreferencesManager().setString(
-  //       'tasks',
-  //       jsonEncode(allTasks.map((e) => e.toJson()).toList()),
-  //     );
-
-  //     // Update the visible todoTasks list
-  //     setState(() {
-  //       todoTasks.removeWhere((element) => element.id == id);
-  //     });
-  //   }
-
   _deleteTask(String? id) async {
     if (id == null) return;
     final finalTasks = PreferencesManager().getString('tasks');
@@ -136,6 +111,9 @@ class _TasksScreenState extends State<TasksScreen> {
                       },
                       onDelete: (String? id) {
                         _deleteTask(id);
+                      },
+                      onEdit: () {
+                        _loadtask();
                       },
                     ),
           ),

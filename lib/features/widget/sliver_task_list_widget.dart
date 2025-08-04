@@ -9,12 +9,14 @@ class SliverTaskListWidget extends StatelessWidget {
     required this.tasks,
     required this.onTap,
     required this.onDelete,
+    required this.onEdit,
     required this.emptyMessage,
     required this.svgPath,
   });
   final List<TaskModel> tasks;
   final Function(bool?, int?) onTap;
-  final Function(String? ) onDelete;
+  final Function(String?) onDelete;
+  final Function onEdit;
 
   final String emptyMessage;
   final String svgPath;
@@ -42,13 +44,23 @@ class SliverTaskListWidget extends StatelessWidget {
             itemCount: tasks.length,
             itemBuilder: (context, index) {
               return TaskItemWidget(
-                onDelete: (String? id) {
-                  onDelete(id);
-                },
-                model: tasks[index],
+                // model: tasks[index],
+                // onChanged: (bool? value) {
+                //   onTap(value, index);
+                // },
+                // onDelete: (String? id) {
+                //   onDelete(id);
+                // },
+                // onEdit: () => onEdit(),
                 onChanged: (bool? value) {
                   onTap(value, index);
                 },
+                onDelete: (String? id) {
+                  onDelete(id);
+                },
+                onEdit: () => onEdit(),
+
+                model: tasks[index],
               );
             },
             separatorBuilder: (context, index) => const SizedBox(height: 8),

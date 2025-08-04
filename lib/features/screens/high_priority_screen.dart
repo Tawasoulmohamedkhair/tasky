@@ -79,6 +79,9 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
                   onDelete: (String? id) {
                     _deleteTask(id);
                   },
+                  onEdit: () {
+                    _loadtask();
+                  },
 
                   onTap: (value, index) async {
                     setState(() {

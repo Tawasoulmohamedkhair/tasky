@@ -69,11 +69,7 @@ class _AddTaskState extends State<AddTaskScreen> {
                 children: [
                   Text(
                     'High Priority  ',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xffFFFCFC),
-                    ),
+                    style: Theme.of(context).textTheme.displaySmall,
                   ),
                   Switch(
                     value: isHighPriority,
@@ -105,7 +101,7 @@ class _AddTaskState extends State<AddTaskScreen> {
                     TaskModel model = TaskModel(
                       // id: listtasks.length + 1,
                       id: uuid.v4(),
-                     
+
                       taskname: taskNameController.text,
                       taskdescription: taskDescriptionController.text,
                       isHighPriority: isHighPriority,
@@ -119,6 +115,7 @@ class _AddTaskState extends State<AddTaskScreen> {
 
                     Navigator.of(context).pop(true);
                   }
+
                   // _formKeytask.currentState!.validate();
                 },
                 icon: Icon(Icons.add),

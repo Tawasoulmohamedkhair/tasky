@@ -120,6 +120,9 @@ ThemeData lightTheme = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: Color(0xffFFFFFF),
+        focusColor: Color(0xFFD1DAD6),
+        
+
     border: OutlineInputBorder(
       borderSide: BorderSide(color: Color(0xffD1DAD6)),
       borderRadius: BorderRadius.circular(16),
@@ -171,4 +174,5 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
+  bottomSheetTheme: BottomSheetThemeData(backgroundColor: Color(0xffF6F7F9)),
 );

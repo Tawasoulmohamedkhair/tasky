@@ -14,6 +14,20 @@ class TaskModel extends Equatable {
     required this.isHighPriority,
     this.isDone = false,
   });
+  TaskModel copyWith({
+    String? id,
+    String? taskname,
+    bool? isDone,
+    bool? isHighPriority,
+  }) {
+    return TaskModel(
+      id: id ?? this.id,
+      taskname: taskname ?? this.taskname,
+      isDone: isDone ?? this.isDone,
+      isHighPriority: isHighPriority ?? this.isHighPriority,
+      taskdescription: '',
+    );
+  }
 
   @override
   List<Object?> get props => [taskname, taskdescription, isHighPriority];
@@ -38,5 +52,7 @@ class TaskModel extends Equatable {
   }
 
   @override
-  String toString() => taskname;
+  String toString() {
+    return 'TaskModel{id: $id, taskName: $taskname, taskDescription: $taskdescription, isHighPriority: $isHighPriority, isDone: $isDone}';
+  }
 }

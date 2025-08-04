@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,6 +20,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? username = 'Default';
+  String? userImagePath;
+
   bool ischecked = false;
   List<TaskModel> task = [];
   bool isloading = false;
@@ -37,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _loadusername() async {
     setState(() {
       username = PreferencesManager().getString('username') ?? '';
+      userImagePath = PreferencesManager().getString('user_image');
     });
   }
 
@@ -44,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isloading = true;
     });
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
 
     final finalTasks = PreferencesManager().getString('tasks');
     if (finalTasks != null) {
@@ -60,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isloading = false;
     });
-    print('Loaded tasks count: ${task.length}');
   }
 
   calculatepercentage() {
@@ -128,18 +130,21 @@ class _HomeScreenState extends State<HomeScreen> {
               SliverToBoxAdapter(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         CircleAvatar(
-                          backgroundColor: Color(0xff181818),
-                          backgroundImage: AssetImage(
-                            'assets/svg/extracted_person.png',
-                          ),
+                          backgroundImage:
+                              userImagePath == null
+                                  ? AssetImage('assets/images/person.png')
+                                  : FileImage(File(userImagePath!)),
                         ),
+
                         SizedBox(width: 8),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+
                           children: [
                             Text(
                               'Good Evening , $username',
@@ -217,6 +222,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     onDelete: (String? id) {
                       _deleteTask(id);
+                    },
+                    onEdit: () {
+                      _loadtask();
                     },
                   ),
             ],

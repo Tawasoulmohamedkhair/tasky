@@ -9,12 +9,14 @@ class TaskListWidget extends StatelessWidget {
     required this.tasks,
     required this.onTap,
     required this.onDelete,
+    required this.onEdit,
     required this.emptyMessage,
     required this.svgPath,
   });
   final List<TaskModel> tasks;
   final Function(bool?, int?) onTap;
-  final Function(String ? ) onDelete;
+  final Function(String?) onDelete;
+  final Function onEdit;
 
   final String emptyMessage;
   final String svgPath;
@@ -43,6 +45,9 @@ class TaskListWidget extends StatelessWidget {
               },
               onDelete: (String? id) {
                 onDelete(id);
+              },
+              onEdit: () {
+                onEdit();
               },
             );
           },

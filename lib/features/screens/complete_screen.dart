@@ -49,20 +49,27 @@ class _CompleteScreenState extends State<CompleteScreen> {
 
   _deleteTask(String? id) async {
     if (id == null) return;
+
+    // Load the full task list from preferences
     final finalTasks = PreferencesManager().getString('tasks');
     if (finalTasks != null) {
-      List<TaskModel> tasks = [];
+      List<TaskModel> allTasks = [];
+      // Decode JSON into a full task list
+      final taskAfterDecode = jsonDecode(finalTasks) as List<dynamic>;
+      allTasks = taskAfterDecode.map((e) => TaskModel.fromJson(e)).toList();
 
-      final taskaftedecode = jsonDecode(finalTasks) as List<dynamic>;
-      tasks = taskaftedecode.map((e) => TaskModel.fromJson(e)).toList();
-      tasks.removeWhere((element) => element.id == id);
-      final updateTasks = tasks.map((e) => e.toJson()).toList();
-      await PreferencesManager().setString('tasks', jsonEncode(updateTasks));
+      // Remove the task with matching ID
+      allTasks.removeWhere((task) => task.id == id);
+
+      // Save the updated full task list back to preferences
+      final updatedJson = allTasks.map((e) => e.toJson()).toList();
+      await PreferencesManager().setString('tasks', jsonEncode(updatedJson));
+
+      // Also update the local completed list for immediate UI refresh
+      setState(() {
+        completeTasks.removeWhere((task) => task.id == id);
+      });
     }
-
-    setState(() {
-      completeTasks.removeWhere((element) => element.id == id);
-    });
   }
 
   @override
@@ -84,25 +91,49 @@ class _CompleteScreenState extends State<CompleteScreen> {
                 isloading
                     ? Center(child: CustomLoadingIndicator())
                     : TaskListWidget(
+                      onDelete: (String? id) {
+                        _deleteTask(id);
+                      },
+                      onEdit: () {
+                        _loadtask();
+                      },
                       svgPath: 'assets/svg/file.svg',
 
                       emptyMessage: 'No Tasks',
                       tasks: completeTasks,
-                      onTap: (value, index) async {
-                        setState(() {
-                          completeTasks[index!].isDone = value ?? false;
-                        });
 
-                        final updateTasks =
-                            completeTasks.map((e) => e.toJson()).toList();
-                        await PreferencesManager().setString(
+                      onTap: (value, index) async {
+                        final finalTasks = PreferencesManager().getString(
                           'tasks',
-                          jsonEncode(updateTasks),
                         );
-                        _loadtask();
-                      },
-                      onDelete: (String? id) {
-                        _deleteTask(id);
+                        if (finalTasks != null) {
+                          List<TaskModel> allTasks =
+                              (jsonDecode(finalTasks) as List)
+                                  .map((e) => TaskModel.fromJson(e))
+                                  .toList();
+
+                          final currentTask = completeTasks[index!];
+
+                          // Find and update the correct task in the full list
+                          final fullListIndex = allTasks.indexWhere(
+                            (e) => e.id == currentTask.id,
+                          );
+                          if (fullListIndex != -1) {
+                            allTasks[fullListIndex] = allTasks[fullListIndex]
+                                .copyWith(isDone: value ?? false);
+                          }
+
+                          // Save the updated full list
+                          final updatedJson =
+                              allTasks.map((e) => e.toJson()).toList();
+                          await PreferencesManager().setString(
+                            'tasks',
+                            jsonEncode(updatedJson),
+                          );
+
+                          // Refresh completed tasks only
+                          _loadtask();
+                        }
                       },
                     ),
           ),

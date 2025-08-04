@@ -35,6 +35,7 @@ ThemeData darkTheme = ThemeData(
       (states) => states.contains(WidgetState.selected) ? 0 : 2,
     ),
   ),
+  bottomSheetTheme: BottomSheetThemeData(backgroundColor: Color(0xff282828)),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor: WidgetStatePropertyAll(Color(0xff15B86C)),
@@ -115,6 +116,10 @@ ThemeData darkTheme = ThemeData(
     border: OutlineInputBorder(
       borderSide: BorderSide.none,
       borderRadius: BorderRadius.circular(16),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(color: Colors.red, width: 0.5),
     ),
     hintStyle: TextStyle(color: Color(0xff6D6D6D)),
   ),

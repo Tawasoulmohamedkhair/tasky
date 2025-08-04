@@ -46,32 +46,34 @@ class IsHighPriorityWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 8),
-                ...tasks.where((e) => e.isHighPriority).take(4).map((element) {
-                  return Row(
-                    children: [
-                      CustomCheckbox(
-                        value: element.isDone,
-                        onChanged: (bool? value) async {
-                          final index = tasks.indexWhere(
-                            (e) => e.id == element.id,
-                          );
-                          onTap(value, index);
-                        },
-                      ),
-
-                      Expanded(
-                        child: Text(
-                          element.taskname,
-                          style:
-                              element.isDone
-                                  ? Theme.of(context).textTheme.titleLarge
-                                  : Theme.of(context).textTheme.displaySmall,
-                          maxLines: 1,
+                ...tasks.where((e) => e.isHighPriority && e.isDone).take(4).map(
+                  (element) {
+                    return Row(
+                      children: [
+                        CustomCheckbox(
+                          value: element.isDone,
+                          onChanged: (bool? value) async {
+                            final index = tasks.indexWhere(
+                              (e) => e.id == element.id,
+                            );
+                            onTap(value, index);
+                          },
                         ),
-                      ),
-                    ],
-                  );
-                }),
+
+                        Expanded(
+                          child: Text(
+                            element.taskname,
+                            style:
+                                element.isDone
+                                    ? Theme.of(context).textTheme.titleLarge
+                                    : Theme.of(context).textTheme.displaySmall,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ],
             ),
           ),
