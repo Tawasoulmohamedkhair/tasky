@@ -53,7 +53,7 @@ class WelcomScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Your productivity journey startss here.',
+                    'Your productivity journey starts here.',
                     style: Theme.of(
                       context,
                     ).textTheme.displaySmall!.copyWith(fontSize: 16),
