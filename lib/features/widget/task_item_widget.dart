@@ -93,7 +93,7 @@ class TaskItemWidget extends StatelessWidget {
                   _showAlertDialog(context);
                   break;
                 case TaskActionItemsEnum.edit:
-                  final result = await ShowBottomSheet(context, model);
+                  final result = await showBottomSheet(context, model);
                   if (result == true) {
                     onEdit();
                   }
@@ -156,7 +156,7 @@ class TaskItemWidget extends StatelessWidget {
     );
   }
 
-  Future<bool?> ShowBottomSheet(BuildContext context, TaskModel model) {
+  Future<bool?> showBottomSheet(BuildContext context, TaskModel model) {
     final GlobalKey<FormState> formKeytask = GlobalKey<FormState>();
 
     final TextEditingController taskNameController = TextEditingController(
@@ -169,10 +169,10 @@ class TaskItemWidget extends StatelessWidget {
     return showModalBottomSheet<bool>(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return StatefulBuilder(
           builder:
-              (context, setState) => Padding(
+              (BuildContext context, setState) => Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 8,
@@ -204,6 +204,7 @@ class TaskItemWidget extends StatelessWidget {
                         controller: taskDescriptionController,
                       ),
 
+                      // SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -249,6 +250,7 @@ class TaskItemWidget extends StatelessWidget {
                               isHighPriority: isHighPriority,
                               isDone: model.isDone,
                             );
+                            Navigator.of(context).pop(true);
 
                             final items = listtasks.firstWhere(
                               (e) => e['id'] == model.id,
@@ -262,9 +264,8 @@ class TaskItemWidget extends StatelessWidget {
                               'tasks',
                               taskencode,
                             );
-
-                            Navigator.of(context).pop(true);
                           }
+                          // _formKeytask.currentState!.validate();
                         },
                         icon: Icon(Icons.edit),
                       ),

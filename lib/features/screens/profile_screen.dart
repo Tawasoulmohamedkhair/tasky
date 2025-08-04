@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/core/theme/theme_controller.dart';
 import 'package:tasky/features/screens/user_details.dart';
@@ -23,7 +22,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String motivationQuote;
   bool isloading = true;
   bool isDarkMode = false;
-  File? _selectedImage;
   String? userImagePath;
   @override
   void initState() {
@@ -184,34 +182,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _showButtonSheet(BuildContext context) {
-    showModalBottomSheet(
-      isScrollControlled: true,
+  // void _showButtonSheet(BuildContext context) {
+  //   showModalBottomSheet(
+  //     isScrollControlled: true,
 
-      context: context,
-      builder: (context) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.9,
-          ),
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  color: Colors.red,
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
+  //     context: context,
+  //     builder: (context) {
+  //       return ConstrainedBox(
+  //         constraints: BoxConstraints(
+  //           maxHeight: MediaQuery.of(context).size.height * 0.9,
+  //         ),
+  //         child: ListView.builder(
+  //           shrinkWrap: true,
+  //           itemCount: 5,
+  //           itemBuilder: (context, index) {
+  //             return Padding(
+  //               padding: const EdgeInsets.all(16.0),
+  //               child: Container(
+  //                 width: MediaQuery.of(context).size.width,
+  //                 height: 50,
+  //                 color: Colors.red,
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   void _showImageSourceDilog(
     BuildContext context,

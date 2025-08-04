@@ -53,7 +53,7 @@ class WelcomScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Your productivity journey starts here.',
+                    'Your productivity journey startss here.',
                     style: Theme.of(
                       context,
                     ).textTheme.displaySmall!.copyWith(fontSize: 16),
@@ -91,10 +91,6 @@ class WelcomScreen extends StatelessWidget {
                         await PreferencesManager().setString(
                           'username',
                           namecontroller.text,
-                        );
-
-                        String? name = PreferencesManager().getString(
-                          'username',
                         );
 
                         Navigator.pushReplacement(
