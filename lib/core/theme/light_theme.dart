@@ -148,11 +148,11 @@ ThemeData lightTheme = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
   ),
   iconTheme: IconThemeData(color: Color(0xff3A4640)),
-  dialogTheme: DialogTheme(
-    backgroundColor: Color(0xffF6F7F9),
-    titleTextStyle: TextStyle(color: Color(0xff161F1B)),
-    contentTextStyle: TextStyle(color: Color(0xff161F1B)),
-  ),
+  // dialogTheme: DialogTheme(
+  //   backgroundColor: Color(0xffF6F7F9),
+  //   titleTextStyle: TextStyle(color: Color(0xff161F1B)),
+  //   contentTextStyle: TextStyle(color: Color(0xff161F1B)),
+  // ),
   dividerTheme: DividerThemeData(color: Color(0xffD1DAD6)),
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: Colors.black,

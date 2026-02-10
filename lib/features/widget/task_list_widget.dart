@@ -15,7 +15,7 @@ class TaskListWidget extends StatelessWidget {
   });
   final List<TaskModel> tasks;
   final Function(bool?, int?) onTap;
-  final Function(String?) onDelete;
+  final Function(int?) onDelete;
   final Function onEdit;
 
   final String emptyMessage;
@@ -39,11 +39,12 @@ class TaskListWidget extends StatelessWidget {
           itemCount: tasks.length,
           itemBuilder: (context, index) {
             return TaskItemWidget(
+              
               model: tasks[index],
               onChanged: (bool? value) {
                 onTap(value, index);
               },
-              onDelete: (String? id) {
+              onDelete: (int? id) {
                 onDelete(id);
               },
               onEdit: () {

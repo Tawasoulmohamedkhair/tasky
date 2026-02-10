@@ -1,133 +1,88 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:tasky/core/services/preferences_manager.dart';
+import 'package:provider/provider.dart';
 import 'package:tasky/core/widgets/custom_elevated_button.dart';
 import 'package:tasky/core/widgets/custom_text_form_field.dart';
-import 'package:tasky/data/models/task_model.dart';
-import 'package:uuid/uuid.dart';
+import 'package:tasky/features/controller/addtask/add_task_controller.dart';
 
-class AddTaskScreen extends StatefulWidget {
+class AddTaskScreen extends StatelessWidget {
   const AddTaskScreen({super.key});
-
-  @override
-  State<AddTaskScreen> createState() => _AddTaskState();
-}
-
-class _AddTaskState extends State<AddTaskScreen> {
-  final GlobalKey<FormState> _formKeytask = GlobalKey<FormState>();
-
-  final TextEditingController taskNameController = TextEditingController();
-
-  final TextEditingController taskDescriptionController =
-      TextEditingController();
-  bool isHighPriority = true;
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final uuid = Uuid();
-    return Scaffold(
-      appBar: AppBar(title: Text('New Task')),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
-        child: Form(
-          key: _formKeytask,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomTextFormFields(
-                title: 'Task Name',
-                validator:
-                    (value) =>
-                        value == null || value.trim().isEmpty
-                            ? 'Please enter your  Task Name'
-                            : null,
-                hintText: 'Finish UI design for login screen',
+    return ChangeNotifierProvider<AddTaskController>(
+      create: (context) => AddTaskController(),
+      builder: (context, child) {
+        final controller = context.read<AddTaskController>();
 
-                controller: taskNameController,
-              ),
-
-              SizedBox(height: 20),
-
-              CustomTextFormFields(
-                title: 'Task Description',
-                maxLines: 5,
-                hintText:
-                    'Finish onboarding UI and hand off to devs by Thursday.',
-                controller: taskDescriptionController,
-              ),
-
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return Scaffold(
+          appBar: AppBar(title: Text('New Task')),
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
+            child: Form(
+              key: controller.formKeytask,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'High Priority  ',
-                    style: Theme.of(context).textTheme.displaySmall,
+                  CustomTextFormFields(
+                    title: 'Task Name',
+                    validator:
+                        (value) =>
+                            value == null || value.trim().isEmpty
+                                ? 'Please enter your  Task Name'
+                                : null,
+                    hintText: 'Finish UI design for login screen',
+
+                    controller: controller.taskNameController,
                   ),
-                  Switch(
-                    value: isHighPriority,
-                    onChanged: (value) {
-                      setState(() {
-                        isHighPriority = value;
-                      });
+
+                  SizedBox(height: 20),
+
+                  CustomTextFormFields(
+                    title: 'Task Description',
+                    maxLines: 5,
+                    hintText:
+                        'Finish onboarding UI and hand off to devs by Thursday.',
+                    controller: controller.taskDescriptionController,
+                  ),
+
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'High Priority  ',
+                        style: Theme.of(context).textTheme.displaySmall,
+                      ),
+                      Consumer(
+                        builder:
+                            (context, AddTaskController value, _) => Switch(
+                              value: value.isHighPriority,
+                              onChanged: (value) {
+                                controller.toggle(value);
+                              },
+                            ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+
+                  CustomElevatedButton(
+                    onPressed: () async {
+                      context.read<AddTaskController>().addTask(context);
                     },
+                    icon: Icon(Icons.add),
+                    label: Text(
+                      'Add Task',
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
                   ),
                 ],
               ),
-              Spacer(),
-
-              CustomElevatedButton(
-                onPressed: () async {
-                  //validate field
-                  if (_formKeytask.currentState?.validate() ?? false) {
-                    //save data
-                    //check by key=>'tasks'->String
-                    final taskjson = PreferencesManager().getString('tasks');
-                    // initialize list of dynami
-                    List<dynamic> listtasks = []; //List<Map<String, dynamic<>>
-                    //it is not empty
-                    if (taskjson != null) {
-                      //converted to list
-                      listtasks = jsonDecode(taskjson);
-                    }
-                    //listtasks.length =1=>1+1
-                    TaskModel model = TaskModel(
-                      // id: listtasks.length + 1,
-                      id: uuid.v4(),
-
-                      taskname: taskNameController.text,
-                      taskdescription: taskDescriptionController.text,
-                      isHighPriority: isHighPriority,
-                    );
-                    //list of Map
-                    listtasks.add(model.toJson());
-                    //convert to String
-                    final taskencode = jsonEncode(listtasks);
-
-                    await PreferencesManager().setString('tasks', taskencode);
-
-                    Navigator.of(context).pop(true);
-                  }
-
-                  // _formKeytask.currentState!.validate();
-                },
-                icon: Icon(Icons.add),
-                label: Text(
-                  'Add Task',
-                  style: Theme.of(context).textTheme.labelLarge,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:tasky/core/constant/storage_key.dart';
 import 'package:tasky/core/enums/task_action_items_enums.dart';
 import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/core/theme/theme_controller.dart';
@@ -19,9 +20,8 @@ class TaskItemWidget extends StatelessWidget {
     required this.onEdit,
   });
   final TaskModel model;
-
   final Function(bool?) onChanged;
-  final Function(String? id) onDelete;
+  final Function(int) onDelete;
   final Function onEdit;
 
   @override
@@ -55,7 +55,7 @@ class TaskItemWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  model.taskname,
+                  model.taskName,
 
                   style:
                       model.isDone
@@ -64,9 +64,9 @@ class TaskItemWidget extends StatelessWidget {
 
                   maxLines: 1,
                 ),
-                if (model.taskdescription.isNotEmpty)
+                if (model.taskDescription.isNotEmpty)
                   Text(
-                    model.taskdescription,
+                    model.taskDescription,
 
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
@@ -120,7 +120,7 @@ class TaskItemWidget extends StatelessWidget {
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
-        final controller = TextEditingController(text: model.taskname);
+        final controller = TextEditingController(text: model.taskName);
         return AlertDialog(
           title: Text('Delete Task'),
           content: Column(
@@ -143,11 +143,12 @@ class TaskItemWidget extends StatelessWidget {
               },
             ),
             TextButton(
-              style: TextButton.styleFrom(foregroundColor: Colors.red),
               onPressed: () {
                 onDelete(model.id);
-                Navigator.of(context).pop();
+
+                Navigator.pop(context);
               },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
               child: Text('Delete'),
             ),
           ],
@@ -160,10 +161,10 @@ class TaskItemWidget extends StatelessWidget {
     final GlobalKey<FormState> formKeytask = GlobalKey<FormState>();
 
     final TextEditingController taskNameController = TextEditingController(
-      text: model.taskname,
+      text: model.taskName,
     );
     final TextEditingController taskDescriptionController =
-        TextEditingController(text: model.taskdescription);
+        TextEditingController(text: model.taskDescription);
     bool isHighPriority = model.isHighPriority;
 
     return showModalBottomSheet<bool>(
@@ -204,7 +205,6 @@ class TaskItemWidget extends StatelessWidget {
                         controller: taskDescriptionController,
                       ),
 
-                      // SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -234,7 +234,7 @@ class TaskItemWidget extends StatelessWidget {
                           //validate field
                           if (formKeytask.currentState?.validate() ?? false) {
                             final taskjson = PreferencesManager().getString(
-                              'tasks',
+                              StorageKey.tasks,
                             );
                             List<dynamic> listtasks =
                                 []; //List<Map<String, dynamic<>>
@@ -245,8 +245,8 @@ class TaskItemWidget extends StatelessWidget {
                             TaskModel newmodel = TaskModel(
                               id: model.id,
 
-                              taskname: taskNameController.text,
-                              taskdescription: taskDescriptionController.text,
+                              taskName: taskNameController.text,
+                              taskDescription: taskDescriptionController.text,
                               isHighPriority: isHighPriority,
                               isDone: model.isDone,
                             );
@@ -261,7 +261,7 @@ class TaskItemWidget extends StatelessWidget {
                             final taskencode = jsonEncode(listtasks);
 
                             await PreferencesManager().setString(
-                              'tasks',
+                              StorageKey.tasks,
                               taskencode,
                             );
                           }

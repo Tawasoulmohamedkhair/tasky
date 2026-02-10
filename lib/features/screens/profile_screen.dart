@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tasky/core/constant/storage_key.dart';
 import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/core/theme/theme_controller.dart';
 import 'package:tasky/features/screens/user_details.dart';
@@ -31,12 +32,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _loadData() async {
     setState(() {
-      username = PreferencesManager().getString('username') ?? '';
+      username = PreferencesManager().getString(StorageKey.username) ?? '';
       motivationQuote =
-          PreferencesManager().getString('motivationQuote') ??
+          PreferencesManager().getString(StorageKey.motivationQuote) ??
           'One task at a time. One step closer.';
-      isDarkMode = PreferencesManager().getBool('theme') ?? false;
-      userImagePath = PreferencesManager().getString('user_image');
+      isDarkMode = PreferencesManager().getBool(StorageKey.theme) ?? false;
+      userImagePath = PreferencesManager().getString(StorageKey.userimage);
       isloading = false;
     });
   }
@@ -155,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ThemeController.notifierthem.value =
                         value ? ThemeMode.dark : ThemeMode.light;
                   });
-                  await PreferencesManager().setBool('theme', value);
+                  await PreferencesManager().setBool(StorageKey.theme, value);
                 },
               ),
             ),
@@ -181,35 +182,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
-  // void _showButtonSheet(BuildContext context) {
-  //   showModalBottomSheet(
-  //     isScrollControlled: true,
-
-  //     context: context,
-  //     builder: (context) {
-  //       return ConstrainedBox(
-  //         constraints: BoxConstraints(
-  //           maxHeight: MediaQuery.of(context).size.height * 0.9,
-  //         ),
-  //         child: ListView.builder(
-  //           shrinkWrap: true,
-  //           itemCount: 5,
-  //           itemBuilder: (context, index) {
-  //             return Padding(
-  //               padding: const EdgeInsets.all(16.0),
-  //               child: Container(
-  //                 width: MediaQuery.of(context).size.width,
-  //                 height: 50,
-  //                 color: Colors.red,
-  //               ),
-  //             );
-  //           },
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   void _showImageSourceDilog(
     BuildContext context,
@@ -270,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _saveImage(XFile file) async {
     final appDir = await getApplicationDocumentsDirectory();
     final newfile = await File(file.path).copy('${appDir.path}/${file.name}');
-    PreferencesManager().setString('user_image', newfile.path);
+    PreferencesManager().setString(StorageKey.userimage, newfile.path);
     log(newfile.path);
   }
 }

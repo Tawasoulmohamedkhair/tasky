@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/core/constant/storage_key.dart';
 import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/core/widgets/custom_elevated_button.dart';
 import 'package:tasky/core/widgets/custom_text_form_field.dart';
@@ -78,11 +79,11 @@ class _UserDetailsState extends State<UserDetails> {
                 onPressed: () async {
                   if (formkey.currentState!.validate()) {
                     PreferencesManager().setString(
-                      'username',
+                      StorageKey.username,
                       usernamecontroller.value.text,
                     );
                     PreferencesManager().setString(
-                      'motivationQuote',
+                      StorageKey.motivationQuote,
                       motivationquotecontroller.value.text,
                     );
 

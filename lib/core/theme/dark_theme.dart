@@ -129,11 +129,11 @@ ThemeData darkTheme = ThemeData(
   ),
 
   iconTheme: IconThemeData(color: Color(0xffC6C6C6)),
-  dialogTheme: DialogTheme(
-    backgroundColor: Color(0xff181818),
-    titleTextStyle: TextStyle(color: Colors.white),
-    contentTextStyle: TextStyle(color: Colors.white),
-  ),
+  // dialogTheme: DialogTheme(
+  //   backgroundColor: Color(0xff181818),
+  //   titleTextStyle: TextStyle(color: Colors.white),
+  //   contentTextStyle: TextStyle(color: Colors.white),
+  // ),
   dividerTheme: DividerThemeData(color: Color(0xff6E6E6E)),
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: Colors.white,

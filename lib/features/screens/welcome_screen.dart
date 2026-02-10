@@ -1,6 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:tasky/core/constant/asset_image.dart';
+import 'package:tasky/core/constant/constant_text.dart';
+import 'package:tasky/core/constant/storage_key.dart';
 import 'package:tasky/core/services/preferences_manager.dart';
 import 'package:tasky/core/widgets/custom_elevated_button.dart';
 import 'package:tasky/core/widgets/custom_svg_picture.dart';
@@ -29,11 +32,11 @@ class WelcomScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomSvgPicture.withcolorfilter(
-                        svgAssetPath: 'assets/svg/logo.svg',
+                        svgAssetPath: AssetsImage.logo,
                       ),
                       SizedBox(width: 16),
                       Text(
-                        'Tasky',
+                        ConstantText.tasky,
                         style: Theme.of(context).textTheme.displayMedium,
                       ),
                     ],
@@ -43,17 +46,17 @@ class WelcomScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Welcome To Tasky ',
+                        ConstantText.welcome,
                         style: Theme.of(context).textTheme.displaySmall,
                       ),
                       CustomSvgPicture.withcolorfilter(
-                        svgAssetPath: 'assets/svg/waving-hand.svg',
+                        svgAssetPath: AssetsImage.wavinghand,
                       ),
                     ],
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Your productivity journey starts here.',
+                    ConstantText.yourproductivity,
                     style: Theme.of(
                       context,
                     ).textTheme.displaySmall!.copyWith(fontSize: 16),
@@ -61,7 +64,7 @@ class WelcomScreen extends StatelessWidget {
                   SizedBox(height: 24),
 
                   CustomSvgPicture.withcolorfilter(
-                    svgAssetPath: 'assets/svg/pana.svg',
+                    svgAssetPath: AssetsImage.pana,
                     width: 215,
                     height: 200,
                   ),
@@ -72,13 +75,13 @@ class WelcomScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: CustomTextFormFields(
-                        title: 'Full Name',
-                        hintText: 'e.g. Sarah Khalid',
+                        title: ConstantText.fullname,
+                        hintText: ConstantText.hintname,
                         controller: namecontroller,
                         validator:
                             (value) =>
                                 value == null || value.trim().isEmpty
-                                    ? 'Please enter your  fullname'
+                                    ? ConstantText.enterfullname
                                     : null,
                       ),
                     ),
@@ -89,7 +92,7 @@ class WelcomScreen extends StatelessWidget {
                     onPressed: () async {
                       if (formkey.currentState!.validate()) {
                         await PreferencesManager().setString(
-                          'username',
+                          StorageKey.username,
                           namecontroller.text,
                         );
 
@@ -99,14 +102,12 @@ class WelcomScreen extends StatelessWidget {
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Please enter your  fullname'),
-                          ),
+                          SnackBar(content: Text(ConstantText.enterfullname)),
                         );
                       }
                     },
                     label: Text(
-                      'Let’s Get Started',
+                      ConstantText.letgetstarted,
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
