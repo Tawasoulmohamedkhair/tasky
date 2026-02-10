@@ -161,8 +161,8 @@ class TaskController extends ChangeNotifier {
               .map((element) => TaskModel.fromJson(element))
               .toList();
 
-      todoTasks = tasks.where((element) => !element.isDone).toList();
-      completeTasks = tasks.where((element) => element.isDone).toList();
+      todoTasks = tasks.where((element) => element.isDone == false).toList();
+      completeTasks = tasks.where((element) => element.isDone == true).toList();
 
       highPriorityTasks =
           tasks.where((element) => element.isHighPriority).toList();
@@ -182,9 +182,12 @@ class TaskController extends ChangeNotifier {
     calculatePercent();
 
     final updatedTask = tasks.map((element) => element.toJson()).toList();
-    PreferencesManager().setString(StorageKey.tasks, jsonEncode(updatedTask));
+    await PreferencesManager().setString(
+      StorageKey.tasks,
+      jsonEncode(updatedTask),
+    );
 
-    notifyListeners();
+    _loadTasks();
   }
 
   void doneTodoTask(bool? value, int? index) async {
@@ -217,7 +220,7 @@ class TaskController extends ChangeNotifier {
     if (newIndex == -1) return;
 
     tasks[newIndex] = completeTasks[index];
-    completeTasks.removeAt(index);  
+    completeTasks.removeAt(index);
 
     await PreferencesManager().setString(StorageKey.tasks, jsonEncode(tasks));
 
